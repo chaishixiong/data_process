@@ -1,0 +1,9 @@
+SELECT date,count(shop_id) from (SELECT DISTINCT(shop_id) as shop_id, date from (
+SELECT shop_id, LEFT(open_shop_date,7) as date from taobao_shopinfo_202001_cp  WHERE LEFT(open_shop_date,4) = '2020' and address LIKE "%湖州" group by shop_id  UNION
+SELECT shop_id, LEFT(open_shop_date,7) as date from taobao_shopinfo_202002_cp  WHERE LEFT(open_shop_date,4) = '2020' and address LIKE "%湖州" group by shop_id UNION
+SELECT shop_id, LEFT(open_shop_date,7) as date from taobao_shopinfo_202003_cp  WHERE LEFT(open_shop_date,4) = '2020' and address LIKE "%湖州" group by shop_id UNION
+SELECT shop_id, LEFT(open_shop_date,7) as date from taobao_shopinfo_202004_cp  WHERE LEFT(open_shop_date,4) = '2020' and address LIKE "%湖州" group by shop_id UNION
+SELECT shop_id, LEFT(open_shop_date,7) as date from taobao_shopinfo_202005_cp  WHERE LEFT(open_shop_date,4) = '2020' and address LIKE "%湖州" group by shop_id UNION
+SELECT shop_id, LEFT(open_shop_date,7) as date from taobao_shopinfo_202006_cp  WHERE LEFT(open_shop_date,4) = '2020' and address LIKE "%湖州"
+
+) as a group by shop_id) as b group by date

@@ -1,0 +1,68 @@
+SELECT
+ t1.shop_id '网店ID',
+ t2.shop_name '网店名称',
+	t2.shop_url '网店网址',
+	t2.company '归属企业',
+	t2.company_address '企业注册地',
+-- 	t2.province '省',
+-- 	t2.city '市',
+-- 	t2.county '县',
+	t2.open_shop_date '开店时间',
+	t2.main_sale '行业分类',
+	t2.company_boss '联系人',
+	t2.company_tel  '联系方式',
+  -- 这里是查询的2019年度的，所以是2019年，如果是查询2019年12月的，那么这里改成2019年12月累积销售额
+-- 	t1.`2019年1-12月累计销售额（元）`
+	t1.`2020年1-6月累计销售额（元）`
+-- 	t1.`2019年累计销售量`
+
+-- 	
+FROM
+ (SELECT
+  shop_id,
+--   ---这里是查询的2019年度的，所以是2019年，如果是查询2019年12月的，那么这里改成2019年12月累积销售额
+--   sum( sales_money ) '2019年1-12月累计销售额（元）' 
+  sum( sales_money ) '2020年1-6月累计销售额（元）' 
+--   sum( sales_count ) '2019年累计销售量' 
+ FROM
+--   --这里修改查询的表，如果是淘宝的就换成taobao_qiye_shopinfo 京东就换成jd_shopinfo
+	taobao_qiye_shopinfo
+ WHERE
+--  ---这里修改地区  如果是查询省的修改成 provice ='需要查询的省' ,查询区的 county ='需要查询的区'
+county = '鄞州区'  
+-- 	county in ('长兴县','普陀区','莲都区', '定海区', '黄岩区', '东阳市', '苍南县', '临安区', '临海市')
+-- 	 company_address LIKE '%舟山市%'
+-- 	shop_name LIKE "%云库食品%"
+  AND collect_month IN 
+ -- 这里根据要查询的时间修改
+--   (201912,201911,201910,201909,201908,201907,201906,201905,201904,201903,201902,201901 ) 
+  (202006,202005,202004,202003,202002,202001 ) 
+
+ GROUP BY shop_id ) t1 LEFT JOIN ( SELECT * FROM (SELECT
+  shop_id ,
+   shop_name ,
+	shop_url ,
+	company,
+	company_address,
+	open_shop_date,
+	main_sale,
+	company_boss,
+	company_tel
+-- 	province,
+-- 	city,
+-- 	county
+ FROM
+--   --这里修改查询的表，如果是淘宝的就换成taobao_qiye_shopinfo 京东就换成jd_shopinfo
+   taobao_qiye_shopinfo
+  WHERE
+ -- 这里修改地区  如果是查询省的修改成 provice ='需要查询的省' ,查询区的 county ='需要查询的区'
+ county = '鄞州区'  
+-- county in ('长兴县','普陀区','莲都区', '定海区', '黄岩区', '东阳市', '苍南县', '临安区', '临海市')
+--   company_address LIKE '%舟山市%'
+-- shop_name LIKE "%云库食品%"
+ AND collect_month IN 
+  -- 这里根据要查询的时间修改
+--  (201912,201911,201910,201909,201908,201907,201906,201905,201904,201903,201902,201901 ) 
+  (202006,202005,202004,202003,202002,202001 ) 
+
+ ORDER BY collect_month DESC ) aaa GROUP BY shop_id ) t2 ON t1.shop_id = t2.shop_id 

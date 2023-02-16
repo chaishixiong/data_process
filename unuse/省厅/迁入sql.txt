@@ -1,0 +1,14 @@
+SELECT 
+shop_id as '网店ID', 
+shop_name as '网店名称', 
+shop_url as '网点网址', 
+open_shop_date as '开店时间', 
+company_ago as '变更前的企业名称', 
+company_address_ago as '变更前的企业注册地', 
+company_later as '变更后的企业名称', 
+company_address_later as '变更后的企业注册地'
+-- company_boss_later as '联系人', 
+-- company_tel_later as '联系方式' 
+from
+taobao_qiye_address_change_shopinfo
+WHERE county_later='玉环市' and address_change_date in (202001, 202002, 202003, 202004, 202005);

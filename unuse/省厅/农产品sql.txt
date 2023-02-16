@@ -1,0 +1,47 @@
+select 
+	a.shop_id as '网店ID',
+	a.shop_name as '网店名称',
+	a.shop_url as '网店网址',
+	a.main_sale as '行业分类',
+	a.company as '归属企业',
+	a.company_address as '企业注册地',
+	a.open_shop_date as '开店时间',
+	a.company_boss as '联系人',
+	a.company_tel as '联系方式',
+	sum(a.sales_money) 
+	FROM(
+	
+	SELECT
+	shop_id ,
+	shop_name ,
+	shop_url,
+	main_sale ,
+	company ,
+	company_address,
+	open_shop_date,
+	company_boss ,
+	company_tel,
+	sales_money 
+FROM
+	tmall_shopinfo_202001_cp
+WHERE
+	county = '临海市'  AND  (main_sale = '食品/保健' OR main_sale = '医药健康')
+
+UNION
+
+SELECT
+	shop_id ,
+	shop_name ,
+	shop_url,
+	main_sale ,
+	company ,
+	company_address,
+	open_shop_date,
+	company_boss ,
+	company_tel,
+	sales_money 
+FROM
+	tmall_shopinfo_202002_cp
+WHERE
+	county = '临海市'  AND  (main_sale = '食品/保健' OR main_sale = '医药健康')
+		) as a GROUP BY a.shop_id
